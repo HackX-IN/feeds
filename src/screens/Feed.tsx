@@ -9,12 +9,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Colors } from "../constants/Colors";
 import { hp, wp } from "../utils/Responsive-screen";
 import { Ionicons } from "@expo/vector-icons";
 import { API_URL } from "../utils/Api";
 import CardItem from "../components/CardItem";
+import { useNavigation } from "@react-navigation/core";
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
 interface Props {
   title: string;
@@ -24,9 +26,31 @@ interface Props {
 }
 
 const Feed = () => {
+  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState<Props[]>([]);
   const [filteredData, setFilteredData] = useState<Props[]>([]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Text
+          style={{
+            fontSize: hp(2),
+            fontWeight: "800",
+          }}
+        >
+          Feeds
+        </Text>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("AddPost")}>
+          <Ionicons name="add" size={24} color={Colors.text} />
+        </TouchableOpacity>
+      ),
+    } as NativeStackNavigationOptions);
+  }, [navigation]);
+
   useEffect(() => {
     fetch(API_URL)
       .then((response) => response.json())
@@ -62,6 +86,7 @@ const Feed = () => {
           value={searchQuery}
           onChangeText={(text) => setSearchQuery(text)}
           style={styles.input}
+          placeholderTextColor={Colors.text}
         />
         <TouchableOpacity onPress={handleSearch}>
           <Ionicons name="search" size={24} color={Colors.primary} />
@@ -84,7 +109,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   input: {
     fontSize: hp(2),
@@ -96,7 +121,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     padding: 10,
     backgroundColor: Colors.lightGray,
-    width: wp(95),
+    width: wp(96),
     borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
