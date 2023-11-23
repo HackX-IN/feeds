@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Colors } from "../constants/Colors";
 import { hp, wp } from "../utils/Responsive-screen";
 import { Ionicons as Icon } from "@expo/vector-icons";
@@ -57,11 +57,21 @@ const Feed = () => {
     };
   }, [navigation]);
 
+  const SkeletonPlaceHolder = useMemo(() => {
+    return Array.from({ length: 20 }).map((_, index) => null);
+  }, []);
   useEffect(() => {
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error("Error fetching data: ", error));
+    const fetchData = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -99,10 +109,16 @@ const Feed = () => {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={searchQuery.length > 0 ? filteredData : data}
-        keyExtractor={(item) => item.id.toString()}
+        data={
+          filteredData.length > 0
+            ? filteredData
+            : data.length > 0
+            ? data
+            : SkeletonPlaceHolder
+        }
+        keyExtractor={(item) => item!?.id?.toString()}
         renderItem={({ item, index }) => {
-          return <CardItem key={index} item={item} index={index} />;
+          return <CardItem key={index} item={item!} index={index} />;
         }}
       />
     </SafeAreaView>
@@ -115,6 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    // Uncomment the following line if needed:
     // marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   input: {

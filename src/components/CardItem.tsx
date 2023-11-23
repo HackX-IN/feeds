@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { hp, wp } from "../utils/Responsive-screen";
 import { Colors } from "../constants/Colors";
 import { Skeleton } from "moti/skeleton";
+import Animated, { FadeIn, Layout } from "react-native-reanimated";
 
 interface FeedItem {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
+  userId?: number | null;
+  id?: number | null;
+  title?: string;
+  body?: string;
 }
 
 interface CardItemProps {
@@ -16,33 +17,68 @@ interface CardItemProps {
   index: number;
 }
 
+const SkeletonProps = {
+  transition: {
+    type: "timing",
+    duration: 2000,
+  },
+  backgroundColor: "#d4d4d4",
+  colorMode: "light",
+} as const;
+
 const CardItem: React.FC<CardItemProps> = ({ item, index }) => {
+  // const [loading, setLoading] = useState(false);
+  const shouldShowSkeleton = item == null;
+
   return (
     <View style={[styles.cardContainer, { marginTop: index === 0 ? 10 : 0 }]}>
-      <Skeleton
-        show
-        height={70}
-        width={70}
-        radius={"square"}
-        transition={{
-          type: "timing",
-          duration: 2000,
-        }}
-      >
-        <Text
-          style={styles.title}
-          numberOfLines={2}
-        >{`Title: ${item.title}`}</Text>
-      </Skeleton>
-      <Text
-        style={styles.subtitle}
-        numberOfLines={5}
-      >{`Body: ${item.body.trim()}`}</Text>
-      <Text style={styles.id}>{item.id}</Text>
+      <Skeleton.Group show={shouldShowSkeleton}>
+        <Skeleton
+          height={(shouldShowSkeleton && 50) || undefined}
+          width={(shouldShowSkeleton && wp(75)) || undefined}
+          radius={"square"}
+          {...SkeletonProps}
+        >
+          {item?.title && (
+            <Animated.Text
+              layout={Layout}
+              entering={FadeIn.duration(1000)}
+              style={styles.title}
+              numberOfLines={2}
+            >{`Title: ${item?.title}`}</Animated.Text>
+          )}
+        </Skeleton>
+        {shouldShowSkeleton && <Spacer height={8} />}
+        <Skeleton
+          height={(shouldShowSkeleton && hp(12)) || undefined}
+          width={(shouldShowSkeleton && wp(88)) || undefined}
+          radius={"square"}
+          {...SkeletonProps}
+        >
+          {item?.body && (
+            <Animated.Text
+              layout={Layout}
+              entering={FadeIn.duration(1000)}
+              style={styles.subtitle}
+              numberOfLines={5}
+            >{`Body: ${item?.body.trim()}`}</Animated.Text>
+          )}
+        </Skeleton>
+      </Skeleton.Group>
+
+      {item?.id && (
+        <Animated.Text
+          layout={Layout}
+          entering={FadeIn.duration(1000)}
+          style={styles.id}
+        >
+          {item?.id}
+        </Animated.Text>
+      )}
     </View>
   );
 };
-
+const Spacer = ({ height = 16 }) => <View style={{ height }} />;
 const styles = StyleSheet.create({
   cardContainer: {
     borderWidth: 1,

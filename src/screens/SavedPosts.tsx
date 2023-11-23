@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CardItem from "../components/CardItem";
 import { useNavigation } from "@react-navigation/core";
@@ -25,7 +25,9 @@ const SavedPosts = () => {
   useEffect(() => {
     GetPosts();
   }, []);
-
+  const SkeletonPlaceHolder = useMemo(() => {
+    return Array.from({ length: 20 }).map((_) => null);
+  }, []);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -56,7 +58,7 @@ const SavedPosts = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={savedPost}
+        data={savedPost ?? SkeletonPlaceHolder}
         ListEmptyComponent={() => {
           return (
             <View
