@@ -15,7 +15,7 @@ import { hp, wp } from "../utils/Responsive-screen";
 import { Ionicons } from "@expo/vector-icons";
 import { API_URL } from "../utils/Api";
 import CardItem from "../components/CardItem";
-import { useNavigation } from "@react-navigation/core";
+import { NavigationProp, useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
 interface Props {
@@ -26,7 +26,7 @@ interface Props {
 }
 
 const Feed = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState<Props[]>([]);
   const [filteredData, setFilteredData] = useState<Props[]>([]);
@@ -45,7 +45,7 @@ const Feed = () => {
       ),
       headerRight: () => (
         <TouchableOpacity onPress={() => navigation.navigate("AddPost")}>
-          <Ionicons name="add" size={24} color={Colors.text} />
+          <Ionicons name="add" size={27} color={Colors.text} />
         </TouchableOpacity>
       ),
     } as NativeStackNavigationOptions);

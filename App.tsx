@@ -7,17 +7,8 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Feed from "./src/screens/Feed";
 import AddPost from "./src/screens/AddPost";
-import {
-  Platform,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-  useColorScheme,
-} from "react-native";
-import { hp } from "./src/utils/Responsive-screen";
-import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "./src/constants/Colors";
+import SavedPosts from "./src/screens/SavedPosts";
+import { StatusBar, useColorScheme } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,7 +35,16 @@ export default () => {
               headerTitle: "",
             }}
           />
-          <Stack.Screen name="AddPost" component={AddPost} />
+          <Stack.Screen
+            name="AddPost"
+            component={AddPost}
+            options={{ headerShown: true, presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Saved"
+            component={SavedPosts}
+            options={{ headerShown: true }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
