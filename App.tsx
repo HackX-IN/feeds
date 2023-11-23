@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Feed from "./src/screens/Feed";
 import AddPost from "./src/screens/AddPost";
 import SavedPosts from "./src/screens/SavedPosts";
-import { StatusBar, useColorScheme } from "react-native";
+import { LogBox, StatusBar, useColorScheme } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +16,8 @@ export default () => {
   const colorScheme = useColorScheme();
 
   const theme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
+
+  LogBox.ignoreAllLogs();
 
   return (
     <>
