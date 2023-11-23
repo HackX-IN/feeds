@@ -11,7 +11,7 @@ import CardItem from "../components/CardItem";
 import { useNavigation } from "@react-navigation/core";
 import { hp } from "../utils/Responsive-screen";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons as Icon } from "@expo/vector-icons";
 
 interface Props {
   title: string;
@@ -32,11 +32,17 @@ const SavedPosts = () => {
       headerLeft: () => (
         <View style={styles.headers}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={28} color="black" />
+            <Icon name="arrow-back" size={28} color="black" />
           </TouchableOpacity>
         </View>
       ),
     } as NativeStackNavigationOptions);
+    return () => {
+      navigation.setOptions({
+        headerRight: null,
+        headerLeft: null,
+      });
+    };
   }, [navigation]);
 
   const GetPosts = async () => {

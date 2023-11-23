@@ -10,9 +10,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons as Icon } from "@expo/vector-icons";
 import { Colors } from "../constants/Colors";
 import { hp } from "../utils/Responsive-screen";
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
 const AddPost: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -67,7 +68,7 @@ const AddPost: React.FC = () => {
           onPress={() => navigation.navigate("Saved")}
         >
           <Text>Saved Posts</Text>
-          <Ionicons
+          <Icon
             name="chevron-forward-outline"
             size={24}
             color={Colors.success}
@@ -77,7 +78,7 @@ const AddPost: React.FC = () => {
       headerLeft: () => (
         <View style={styles.headers}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back-outline" size={24} color="black" />
+            <Icon name="chevron-back-outline" size={24} color="black" />
           </TouchableOpacity>
 
           <Text
@@ -90,7 +91,7 @@ const AddPost: React.FC = () => {
           </Text>
         </View>
       ),
-    });
+    } as NativeStackNavigationOptions);
     return () => {
       navigation.setOptions({
         headerRight: null,
@@ -98,7 +99,7 @@ const AddPost: React.FC = () => {
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

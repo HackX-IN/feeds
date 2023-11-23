@@ -12,10 +12,10 @@ import {
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Colors } from "../constants/Colors";
 import { hp, wp } from "../utils/Responsive-screen";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons as Icon } from "@expo/vector-icons";
 import { API_URL } from "../utils/Api";
 import CardItem from "../components/CardItem";
-import { NavigationProp, useNavigation } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
 interface Props {
@@ -45,10 +45,16 @@ const Feed = () => {
       ),
       headerRight: () => (
         <TouchableOpacity onPress={() => navigation.navigate("AddPost")}>
-          <Ionicons name="add" size={27} color={Colors.text} />
+          <Icon name="add" size={27} color={Colors.text} />
         </TouchableOpacity>
       ),
     } as NativeStackNavigationOptions);
+    return () => {
+      navigation.setOptions({
+        headerRight: null,
+        headerLeft: null,
+      });
+    };
   }, [navigation]);
 
   useEffect(() => {
@@ -89,7 +95,7 @@ const Feed = () => {
           placeholderTextColor={Colors.text}
         />
         <TouchableOpacity onPress={handleSearch}>
-          <Ionicons name="search" size={24} color={Colors.primary} />
+          <Icon name="search" size={24} color={Colors.primary} />
         </TouchableOpacity>
       </View>
       <FlatList

@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { hp, wp } from "../utils/Responsive-screen";
 import { Colors } from "../constants/Colors";
+import { Skeleton } from "moti/skeleton";
 
 interface FeedItem {
   userId: number;
@@ -18,10 +19,21 @@ interface CardItemProps {
 const CardItem: React.FC<CardItemProps> = ({ item, index }) => {
   return (
     <View style={[styles.cardContainer, { marginTop: index === 0 ? 10 : 0 }]}>
-      <Text
-        style={styles.title}
-        numberOfLines={2}
-      >{`Title: ${item.title}`}</Text>
+      <Skeleton
+        show
+        height={70}
+        width={70}
+        radius={"square"}
+        transition={{
+          type: "timing",
+          duration: 2000,
+        }}
+      >
+        <Text
+          style={styles.title}
+          numberOfLines={2}
+        >{`Title: ${item.title}`}</Text>
+      </Skeleton>
       <Text
         style={styles.subtitle}
         numberOfLines={5}
