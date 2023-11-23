@@ -36,6 +36,9 @@ const SavedPosts = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" size={28} color="black" />
           </TouchableOpacity>
+          <Text style={{ fontSize: hp(1.8), fontWeight: "800" }}>
+            Local Storage
+          </Text>
         </View>
       ),
     } as NativeStackNavigationOptions);

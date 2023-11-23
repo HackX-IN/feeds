@@ -7,6 +7,8 @@ import {
   Button,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
+  Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -49,9 +51,10 @@ const AddPost: React.FC = () => {
 
       const newData = [...parsedData, postData];
       await AsyncStorage.setItem("posts", JSON.stringify(newData));
-
+      Alert.alert("Success", "Post Added Successfully");
       setTitle("");
       setBody("");
+      Keyboard.dismiss();
     } catch (error) {
       console.error("Error saving data to AsyncStorage: ", error);
     } finally {
@@ -78,7 +81,7 @@ const AddPost: React.FC = () => {
       headerLeft: () => (
         <View style={styles.headers}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="chevron-back-outline" size={24} color="black" />
+            <Icon name="arrow-back" size={27} color="black" />
           </TouchableOpacity>
 
           <Text
@@ -135,6 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#fff",
   },
   input: {
     height: 40,
