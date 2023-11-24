@@ -9,12 +9,14 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons as Icon } from "@expo/vector-icons";
 import { Colors } from "../constants/Colors";
-import { hp } from "../utils/Responsive-screen";
+import { hp, wp } from "../utils/Responsive-screen";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
 const AddPost: React.FC = () => {
@@ -84,14 +86,14 @@ const AddPost: React.FC = () => {
             <Icon name="arrow-back" size={27} color="black" />
           </TouchableOpacity>
 
-          <Text
+          {/* <Text
             style={{
               fontSize: hp(2),
               fontWeight: "600",
             }}
           >
             Add Posts
-          </Text>
+          </Text> */}
         </View>
       ),
     } as NativeStackNavigationOptions);
@@ -105,29 +107,52 @@ const AddPost: React.FC = () => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: hp(1.9), fontWeight: "700", margin: 8 }}>
-        Add Post
-      </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Title"
-        value={title}
-        onChangeText={(text) => setTitle(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Body"
-        value={body}
-        onChangeText={(text) => setBody(text)}
-        multiline
-      />
-      {loading ? (
-        <ActivityIndicator size="large" color={Colors.primary} />
-      ) : (
-        <Button title="Post" onPress={handlePost} />
-      )}
-    </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 50}
+    >
+      <View style={styles.card}>
+        <View style={{ position: "absolute", top: hp(4) }}>
+          <Text
+            style={{
+              fontSize: hp(2),
+              fontWeight: "700",
+            }}
+          >
+            Add Post
+          </Text>
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Title"
+          value={title}
+          onChangeText={(text) => setTitle(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Body"
+          value={body}
+          onChangeText={(text) => setBody(text)}
+          multiline
+        />
+        {loading ? (
+          <ActivityIndicator size="large" color={Colors.primary} />
+        ) : (
+          <TouchableOpacity style={styles.button}>
+            <Text
+              style={{
+                fontSize: hp(1.9),
+                fontWeight: "700",
+                color: Colors.background,
+              }}
+            >
+              Post
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -141,16 +166,42 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 20,
+    width: wp(70),
     padding: 10,
-    width: "80%",
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.tabIconDefault,
+    marginBottom: 8,
+    borderRadius: 10,
   },
   headers: {
     flexDirection: "row",
     gap: 5,
     alignItems: "center",
+  },
+  card: {
+    width: wp(85),
+    padding: 20,
+    backgroundColor: Colors.background,
+    justifyContent: "center",
+    alignItems: "center",
+
+    height: hp(40),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 20,
+    elevation: 5,
+  },
+  button: {
+    padding: 8,
+    width: wp(25),
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.primary,
+    borderRadius: 8,
+    marginTop: 8,
   },
 });

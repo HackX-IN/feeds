@@ -36,8 +36,8 @@ const Feed = () => {
       headerLeft: () => (
         <Text
           style={{
-            fontSize: hp(2),
-            fontWeight: "800",
+            fontSize: hp(2.2),
+            fontWeight: "900",
           }}
         >
           Feeds

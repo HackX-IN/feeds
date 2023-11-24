@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/core";
 import { hp } from "../utils/Responsive-screen";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { Ionicons as Icon } from "@expo/vector-icons";
+import { Colors } from "../constants/Colors";
 
 interface Props {
   title: string;
@@ -30,15 +31,18 @@ const SavedPosts = () => {
   }, []);
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: "",
+      headerTitle: "Local Storage",
+      headerTitleAlign: "center",
+      headerTitleStyle: {
+        fontSize: hp(2.2),
+        fontWeight: "700",
+        color: Colors.text,
+      },
       headerLeft: () => (
         <View style={styles.headers}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" size={28} color="black" />
           </TouchableOpacity>
-          <Text style={{ fontSize: hp(1.8), fontWeight: "800" }}>
-            Local Storage
-          </Text>
         </View>
       ),
     } as NativeStackNavigationOptions);
@@ -93,7 +97,7 @@ const styles = StyleSheet.create({
   },
   headers: {
     flexDirection: "row",
-    gap: 5,
+
     alignItems: "center",
   },
 });

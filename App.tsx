@@ -40,7 +40,7 @@ export default () => {
           <Stack.Screen
             name="AddPost"
             component={AddPost}
-            options={{ headerShown: true, presentation: "modal" }}
+            options={{ headerShown: true }}
           />
           <Stack.Screen
             name="Saved"

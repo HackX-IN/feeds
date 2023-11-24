@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useMemo, useState } from "react";
+import { View, Text, StyleSheet, ViewToken } from "react-native";
 import { hp, wp } from "../utils/Responsive-screen";
 import { Colors } from "../constants/Colors";
 import { Skeleton } from "moti/skeleton";
-import Animated, { FadeIn, Layout } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  Layout,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 
 interface FeedItem {
   userId?: number | null;
@@ -26,12 +31,13 @@ const SkeletonProps = {
   colorMode: "light",
 } as const;
 
-const CardItem: React.FC<CardItemProps> = ({ item, index }) => {
-  // const [loading, setLoading] = useState(false);
+const CardItem: React.FC<CardItemProps> = React.memo(({ item, index }) => {
   const shouldShowSkeleton = item == null;
 
   return (
-    <View style={[styles.cardContainer, { marginTop: index === 0 ? 10 : 0 }]}>
+    <Animated.View
+      style={[styles.cardContainer, { marginTop: index === 0 ? 10 : 0 }]}
+    >
       <Skeleton.Group show={shouldShowSkeleton}>
         <Skeleton
           height={(shouldShowSkeleton && 50) || undefined}
@@ -75,9 +81,9 @@ const CardItem: React.FC<CardItemProps> = ({ item, index }) => {
           {item?.id}
         </Animated.Text>
       )}
-    </View>
+    </Animated.View>
   );
-};
+});
 const Spacer = ({ height = 16 }) => <View style={{ height }} />;
 const styles = StyleSheet.create({
   cardContainer: {
