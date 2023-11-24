@@ -14,7 +14,7 @@ This is a React Native application for creating and viewing blog posts. Users ca
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/react-native-blog-app.git
+   git clone https://github.com/HackX-IN/feeds
    ```
 
 2. Navigate to the project folder:
